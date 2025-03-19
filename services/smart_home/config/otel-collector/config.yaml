@@ -29,12 +29,12 @@ processors:
 
 exporters:
   otlp:
-    endpoint: ${env:OTLP_ENDPOINT}:4317
+    endpoint: ${env:OTLP_ENDPOINT}
     tls:
       insecure: true
 
   prometheusremotewrite:
-    endpoint: http://${env:OTLP_ENDPOINT}:9090/api/v1/push
+    endpoint: ${env:MIMIR_ENDPOINT}
     resource_to_telemetry_conversion:
       enabled: true
 
@@ -53,4 +53,4 @@ service:
     metrics:
       receivers: [otlp, docker_stats]
       processors: [resourcedetection/docker, batch]
-      exporters: [otlp, prometheusremotewrite]
+      exporters: [prometheusremotewrite]
