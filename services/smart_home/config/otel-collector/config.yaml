@@ -28,11 +28,6 @@ processors:
     override: false
 
 exporters:
-  otlp:
-    endpoint: ${env:OTLP_ENDPOINT}
-    tls:
-      insecure: true
-
   prometheusremotewrite:
     endpoint: ${env:MIMIR_ENDPOINT}
     resource_to_telemetry_conversion:
