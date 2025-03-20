@@ -28,6 +28,10 @@ processors:
     override: false
 
 exporters:
+  otlp:
+    endpoint: ${env:OTLP_ENDPOINT}
+    tls:
+      insecure: true
   prometheusremotewrite:
     endpoint: ${env:MIMIR_ENDPOINT}
     resource_to_telemetry_conversion:
@@ -41,6 +45,10 @@ extensions:
 service:
   extensions: [health_check, pprof, zpages]
   pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
     metrics:
       receivers: [otlp, docker_stats]
       processors: [resourcedetection/docker, batch]
