@@ -8,12 +8,13 @@ services:
     env_file: .env
     volumes:
       - /mnt/home-assistant:/config
+      - ./config/otel-collector/run:/etc/services.d/home-assistant/run
     logging:
       driver: json-file
       options:
         max-size: "10mb"
         max-file: "1"
-
+        
   homebridge:
     container_name: homebridge
     image: homebridge/homebridge:latest
