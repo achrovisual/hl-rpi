@@ -26,6 +26,11 @@ processors:
     detectors: [env, docker]
     timeout: 2s
     override: false
+  resource:
+    attributes:
+      - key: service.name
+        value: "smart_home"
+        action: upsert
 
 exporters:
   otlp:
@@ -47,9 +52,9 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [batch]
+      processors: [batch, resource]
       exporters: [otlphttp]
     metrics:
       receivers: [otlp, docker_stats]
-      processors: [resourcedetection/docker, batch]
+      processors: [resourcedetection/docker, batch, resource]
       exporters: [prometheusremotewrite]
