@@ -29,7 +29,7 @@ processors:
   resource:
     attributes:
       - key: service.name
-        value: "smart_home"
+        value: "smart-home"
         action: upsert
 
 exporters:
