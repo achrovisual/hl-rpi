@@ -33,7 +33,7 @@ processors:
         action: upsert
 
 exporters:
-  otlp:
+  otlphttp:
     endpoint: ${env:OTLP_ENDPOINT}
     tls:
       insecure: true
