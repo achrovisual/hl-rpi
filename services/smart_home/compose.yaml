@@ -62,8 +62,7 @@ services:
       - WATCHTOWER_HTTP_API_UPDATE=true
       - WATCHTOWER_SCOPE=scrypted
       - WATCHTOWER_HTTP_API_PERIODIC_POLLS=true
-    ports:
-      - 10444:10444
+    network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 3600 --cleanup --scope scrypted
