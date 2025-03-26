@@ -5,8 +5,7 @@ services:
     restart: unless-stopped
     privileged: true
     env_file: .env
-    ports:
-      - 8123:8123
+    network_mode: host
     volumes:
       - /mnt/home-assistant:/config
       - ./config/otel-collector/run:/etc/services.d/home-assistant/run
@@ -22,8 +21,7 @@ services:
     container_name: homebridge
     image: homebridge/homebridge:latest
     restart: unless-stopped
-    ports:
-      - 8581:8581
+    network_mode: host
     volumes:
       - /mnt/homebridge:/homebridge
     logging:
@@ -42,8 +40,7 @@ services:
     environment:
       - SCRYPTED_WEBHOOK_UPDATE_AUTHORIZATION=Bearer ${SCRYPTED_TOKEN}
       - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
-    ports:
-      - 10443:10443
+    network_mode: host
     volumes:
       - /mnt/scrypted:/server/volume
     logging:
@@ -65,6 +62,8 @@ services:
       - WATCHTOWER_HTTP_API_UPDATE=true
       - WATCHTOWER_SCOPE=scrypted
       - WATCHTOWER_HTTP_API_PERIODIC_POLLS=true
+    ports:
+      - 10444:10444
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 3600 --cleanup --scope scrypted
@@ -83,6 +82,7 @@ services:
     image: otel/opentelemetry-collector-contrib
     env_file: .env
     command: --config=/etc/otelcol/config.yaml
+    network_mode: host
     volumes:
       - ./config/otel-collector/config.yaml:/etc/otelcol/config.yaml
       - /var/run/docker.sock:/var/run/docker.sock:ro

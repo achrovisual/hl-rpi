@@ -18,6 +18,6 @@ exec opentelemetry-instrument \
     --traces_exporter console,otlp \
     --metrics_exporter console \
     --service_name home-assistant \
-    --exporter_otlp_endpoint http://otel-collector:4318 \
+    --exporter_otlp_endpoint http://localhost:4318 \
     --exporter_otlp_protocol http/protobuf \
     python3 -m homeassistant --config /config
