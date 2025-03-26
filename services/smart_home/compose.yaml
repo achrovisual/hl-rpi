@@ -3,9 +3,10 @@ services:
     container_name: home-assistant
     image: ghcr.io/home-assistant/home-assistant:stable
     restart: unless-stopped
-    network_mode: host
     privileged: true
     env_file: .env
+    ports:
+      - 8123:8123
     volumes:
       - /mnt/home-assistant:/config
       - ./config/otel-collector/run:/etc/services.d/home-assistant/run
@@ -14,12 +15,15 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
+    depends_on:
+      - otel-collector
         
   homebridge:
     container_name: homebridge
     image: homebridge/homebridge:latest
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - 8581:8581
     volumes:
       - /mnt/homebridge:/homebridge
     logging:
@@ -27,16 +31,19 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
+    depends_on:
+      - otel-collector
 
   scrypted:
     container_name: scrypted
     image: ghcr.io/koush/scrypted
     restart: unless-stopped
-    network_mode: host
     env_file: .env
     environment:
       - SCRYPTED_WEBHOOK_UPDATE_AUTHORIZATION=Bearer ${SCRYPTED_TOKEN}
-      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update
+      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
+    ports:
+      - 10443:10443
     volumes:
       - /mnt/scrypted:/server/volume
     logging:
@@ -46,12 +53,13 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
+    depends_on:
+      - otel-collector
 
   watchtower:
     container_name: scrypted-watchtower
     image: containrrr/watchtower
     restart: unless-stopped
-    network_mode: host
     environment:
       - WATCHTOWER_HTTP_API_TOKEN=${SCRYPTED_TOKEN}
       - WATCHTOWER_HTTP_API_UPDATE=true
@@ -67,13 +75,14 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
+    depends_on:
+      - otel-collector
 
   otel-collector:
     container_name: otel-collector
     image: otel/opentelemetry-collector-contrib
     env_file: .env
     command: --config=/etc/otelcol/config.yaml
-    network_mode: host
     volumes:
       - ./config/otel-collector/config.yaml:/etc/otelcol/config.yaml
       - /var/run/docker.sock:/var/run/docker.sock:ro
