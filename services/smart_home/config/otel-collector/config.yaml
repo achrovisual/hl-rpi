@@ -3,6 +3,7 @@ receivers:
     protocols:
       grpc:
       http:
+        endpoint: "0.0.0.0:4318"
   docker_stats:
     endpoint: unix:///var/run/docker.sock
     collection_interval: 30s
