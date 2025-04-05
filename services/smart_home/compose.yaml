@@ -7,8 +7,9 @@ services:
     env_file: .env
     network_mode: host
     volumes:
-      - /mnt/home-assistant:/config
-      - ./config/otel-collector/run:/etc/services.d/home-assistant/run
+      - ./data/home-assistant:/config
+      - ./commands:/config/commands
+    #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
     logging:
       driver: json-file
       options:
