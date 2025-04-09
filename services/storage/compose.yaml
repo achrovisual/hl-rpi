@@ -1,0 +1,13 @@
+services:
+  samba:
+    image: dockurr/samba
+    container_name: samba
+    environment:
+      NAME: ${SAMBA_NAME}
+      USER: ${SAMBA_USER}
+      PASS: ${SAMBA_PASS}
+    ports:
+      - 445:445
+    volumes:
+      - ${SAMBA_VOLUME}:/storage
+    restart: always
