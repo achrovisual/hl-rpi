@@ -1,6 +1,6 @@
 services:
   samba:
-    container_name: plex-samba
+    container_name: samba
     image: dockurr/samba
     restart: always
     environment:
@@ -10,4 +10,5 @@ services:
     ports:
       - 445:445
     volumes:
+      - ./config/samba/smb.conf:/etc/samba/smb.conf
       - ${SAMBA_VOLUME}:/storage
