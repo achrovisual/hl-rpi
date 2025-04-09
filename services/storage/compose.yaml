@@ -1,0 +1,13 @@
+services:
+  samba:
+    container_name: plex-samba
+    image: dockurr/samba
+    restart: always
+    environment:
+      NAME: ${SAMBA_NAME}
+      USER: ${SAMBA_USER}
+      PASS: ${SAMBA_PASS}
+    ports:
+      - 445:445
+    volumes:
+      - ${SAMBA_VOLUME}:/storage

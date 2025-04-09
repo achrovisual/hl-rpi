@@ -1,13 +1,21 @@
 services:
-  samba:
-    image: dockurr/samba
-    container_name: samba
-    environment:
-      NAME: ${SAMBA_NAME}
-      USER: ${SAMBA_USER}
-      PASS: ${SAMBA_PASS}
-    ports:
-      - 445:445
-    volumes:
-      - ${SAMBA_VOLUME}:/storage
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker
     restart: always
+    environment:
+      TZ: ${PLEX_TZ}
+      PLEX_CLAIM: ${PLEX_CLAIM_TOKEN}
+    ports:
+      - 32400:32400/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    volumes:
+      - ${PLEX_CONFIG_VOLUME}:/config
+      - ${PLEX_TRANSCODE_VOLUME}:/transcode
+      - ${PLEX_DATA_VOLUME}:/data
