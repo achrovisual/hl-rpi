@@ -7,8 +7,8 @@ services:
     env_file: .env
     network_mode: host
     volumes:
-      - ./data/home-assistant:/config
-      - ./commands:/config/commands
+      - ${HOME_ASSISTANT_VOLUME}:/config
+      - ./config/home-assistant/commands:/commands
     #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
     logging:
       driver: json-file
@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /mnt/homebridge:/homebridge
+      - ${HOMEBRIDGE_VOLUME}:/homebridge
     logging:
       driver: json-file
       options:
@@ -43,7 +43,7 @@ services:
       - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
     network_mode: host
     volumes:
-      - /mnt/scrypted:/server/volume
+      - ${SCRYPTED_VOLUME}:/server/volume
     logging:
       driver: json-file
       options:
