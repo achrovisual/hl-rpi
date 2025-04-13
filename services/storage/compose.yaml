@@ -12,3 +12,35 @@ services:
     volumes:
       - ./config/samba/smb.conf:/etc/samba/smb.conf
       - ${SAMBA_VOLUME}:/storage
+      
+  qbittorrent-wireguard:
+    container_name: qbittorrent
+    image: docker.io/tenseiken/qbittorrent-wireguard:latest
+    restart: unless-stopped
+    network_mode: "bridge"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - LAN_NETWORK=${QBITTORRENT_LAN}
+      - QBT_LEGAL_NOTICE=confirm
+    volumes:
+      - ${QBITTORRENT_DATA_VOLUME}:/downloads
+      - ${QBITTORRENT_CONFIG_VOLUME}:/config
+    cap_add:
+      - NET_ADMIN
+    entrypoint:
+      - /bin/bash
+      - /start.sh
+    ipc: "private"
+    ports:
+      - 8999:8999/tcp
+      - 8999:8999/udp
+      - 9000:8080/tcp
+    security_opt:
+      - label=disable
+    stdin_open: true
+    sysctls:
+      - net.ipv4.conf.all.rp_filter=2
+      - net.ipv4.conf.all.src_valid_mark=1
+    tty: true
+    working_dir: "/opt"
