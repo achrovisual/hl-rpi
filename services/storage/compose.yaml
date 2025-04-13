@@ -13,7 +13,7 @@ services:
       - ./config/samba/smb.conf:/etc/samba/smb.conf
       - ${SAMBA_VOLUME}:/storage
       
-  qbittorrent-wireguard:
+  qbittorrent:
     container_name: qbittorrent
     image: docker.io/tenseiken/qbittorrent-wireguard:latest
     restart: unless-stopped
