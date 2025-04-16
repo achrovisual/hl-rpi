@@ -15,8 +15,6 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
-    # depends_on:
-    #   - otel-collector
         
   homebridge:
     container_name: homebridge
@@ -30,8 +28,6 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
-    # depends_on:
-    #   - otel-collector
 
   scrypted:
     container_name: scrypted
@@ -51,8 +47,6 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
-    # depends_on:
-    #   - otel-collector
 
   watchtower:
     container_name: scrypted-watchtower
@@ -74,22 +68,3 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
-    # depends_on:
-    #   - otel-collector
-
-  otel-collector:
-    container_name: otel-collector
-    image: otel/opentelemetry-collector-contrib
-    env_file: .env
-    command: --config=/etc/otelcol/config.yaml
-    network_mode: host
-    volumes:
-      - ./config/otel-collector/config.yaml:/etc/otelcol/config.yaml
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    logging:
-      driver: json-file
-      options:
-        max-size: "10mb"
-        max-file: "1"
-    profiles:
-      - monitored
