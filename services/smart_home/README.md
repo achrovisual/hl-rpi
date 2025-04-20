@@ -11,23 +11,16 @@ More complex automations can also be configured through Home Assistant as oppose
 ### Homebridge
 Homebridge is an open-source software that acts as a bridge between Apple HomeKit and smart home devices that are not natively supported. This is a secondary service that will be used for its plugins.
 
+### go2rtc
+go2rtc is an open-source camera streaming application that supports multiple protocols, including WebRTC, RTSP, RTMP, and more. It essentially acts as a stream proxy, taking video feeds from cameras and making them available in various formats.
+
 ### Scrypted
 Scrypted is an open-source video integration platform that allows exposing of unsupported cameras to Apple HomeKit with support for HomeKit Secure Video (HKSV).
-
-
-## Mounting service directories
-The volumes set in the compose file are intended to be remote directories from an SMB share. This prevents accidental data loss due to instance changes or maintenance. 
-
-The remote folders expected to be mounted in `/mnt` which can be declared in `/etc/fstab`.
-
-```
-//192.168.1.2/home-assistant /mnt/home-assistant cifs user=user,password=password,mfsymlinks 0 0
-``` 
 
 ## Deploying the services
 
 Run the command below to deploy Home Assistant, Homebridge, and Scrypted.
 
 ```console
-root@homelab:~/apollo$ cp .env.example .env && docker compose up -d
+user@rpi:~/hl-rpi/services/smart_home$ cp .env.example .env && sudo docker compose up -d
 ```
