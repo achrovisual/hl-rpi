@@ -23,11 +23,11 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - VPN_ENABLED=yes
-      - VPN_PROV=custom
-      - VPN_CLIENT=wireguard
+      - VPN_ENABLED=${QBITTORRENT_VPN_ENABLED}
+      - VPN_PROV=${QBITORRENT_VPN_PROVIDER}
+      - VPN_CLIENT=${QBITORRENT_VPN_CLIENT}
       - LAN_NETWORK=${QBITTORRENT_LAN}
-      - NAME_SERVERS=1.1.1.1,1.0.0.1
+      - NAME_SERVERS=${QBITORRENT_NAMESERVERS}
       - WEBUI_PORT=9000
       - PUID=1000
       - PGID=1000
