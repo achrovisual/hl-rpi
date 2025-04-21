@@ -15,34 +15,31 @@ services:
       
   qbittorrent:
     container_name: qbittorrent
-    image: docker.io/tenseiken/qbittorrent-wireguard:latest
+    image: binhex/arch-qbittorrentvpn
     restart: unless-stopped
-    network_mode: "bridge"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - LAN_NETWORK=${QBITTORRENT_LAN}
-      - QBT_LEGAL_NOTICE=confirm
-    volumes:
-      - ${QBITTORRENT_DATA_VOLUME}:/downloads
-      - ${QBITTORRENT_CONFIG_VOLUME}:/config
+    privileged: true
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     cap_add:
       - NET_ADMIN
-    entrypoint:
-      - /bin/bash
-      - /start.sh
-    ipc: "private"
+    environment:
+      - VPN_ENABLED=yes
+      - VPN_PROV=custom
+      - VPN_CLIENT=wireguard
+      - LAN_NETWORK=${QBITTORRENT_LAN}
+      - NAME_SERVERS=1.1.1.1,1.0.0.1
+      - WEBUI_PORT=9000
+      - PUID=1000
+      - PGID=1000
     ports:
-      - 8999:8999/tcp
-      - 8999:8999/udp
-      - 9000:8080/tcp
-    security_opt:
-      - label=disable
-    stdin_open: true
-    sysctls:
-      - net.ipv4.conf.all.rp_filter=2
-      - net.ipv4.conf.all.src_valid_mark=1
-    tty: true
-    working_dir: "/opt"
-    profiles:
-      - torrent
+      - 9000:9000
+      - 8118:8118
+      - 9118:9118
+      - 58946:58946
+      - 58946:58946/udp
+    volumes:
+      - ${QBITTORRENT_DATA_VOLUME}:/data
+      - ${QBITTORRENT_CONFIG_VOLUME}:/config
+      - /etc/localtime:/etc/localtime:ro
+    # profiles:
+    #   - torrent
