@@ -37,3 +37,6 @@ terraform.rc
 .env
 
 **/services/*/data
+
+# Ignore config files
+smb.conf
