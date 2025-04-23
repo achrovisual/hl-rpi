@@ -14,9 +14,6 @@ Homebridge is an open-source software that acts as a bridge between Apple HomeKi
 ### Scrypted
 Scrypted is an open-source video integration platform that allows exposing of unsupported cameras to Apple HomeKit with support for HomeKit Secure Video (HKSV).
 
-### go2rtc
-go2rtc is an open-source camera streaming application that supports multiple protocols, including WebRTC, RTSP, RTMP, and more. It essentially acts as a stream proxy, taking video feeds from cameras and making them available in various formats.
-
 ## Deploying the services
 
 ## Set the environment file
