@@ -29,18 +29,6 @@ services:
         max-size: "10mb"
         max-file: "1"
 
-  go2rtc:
-    container_name: go2rtc
-    image: alexxit/go2rtc:latest
-    restart: unless-stopped
-    network_mode: host
-    privileged: true
-    environment:
-      - TZ=Asia/Manila
-    volumes:
-      - ${GO2RTC_VOLUME}:/config
-      - ${HOME_ASSISTANT_VOLUME}:/hass/config
-
   scrypted:
     container_name: scrypted
     image: ghcr.io/koush/scrypted
