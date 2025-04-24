@@ -1,0 +1,28 @@
+name: Check Pull Request
+on: pull_request
+
+jobs:
+  check_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR target branch is ok
+        run: |
+          branch_name=${GITHUB_HEAD_REF}
+          echo "Pull Request Branch: $branch_name"
+          
+          target_branch=${GITHUB_BASE_REF}
+          echo "Target Branch: $target_branch"
+          regex="^(feature|fix|chore)/+.*$"
+          
+          if [[ "$branch_name" =~ $regex ]]; then
+            echo "Pull request branch passes the branch name requirement."
+            if [[ "$target_branch" != "main" ]]; then
+              echo "Target branch is not main."
+              exit 1
+            fi
+          else
+            echo "Pull request branch name to be merged to main must be prefixed with feature, fix, or chore."
+            exit 1
+          fi
+        shell: bash
