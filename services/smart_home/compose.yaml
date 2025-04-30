@@ -8,7 +8,7 @@ services:
     network_mode: host
     volumes:
       - ${HOME_ASSISTANT_VOLUME}:/config
-      - ./config/home-assistant/commands:/commands
+      - ./config/home-assistant/commands:/commands:ro
     #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
     logging:
       driver: json-file
