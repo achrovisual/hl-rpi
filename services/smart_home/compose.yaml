@@ -74,3 +74,8 @@ services:
     image: seriousm4x/upsnap
     restart: unless-stopped
     network_mode: host
+    logging:
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"
