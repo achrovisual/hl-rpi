@@ -75,7 +75,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ./data:/app/pb_data
+      - ${UPSNAP_VOLUME}:/app/pb_data
     logging:
       driver: json-file
       options:
