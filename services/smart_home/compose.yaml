@@ -68,3 +68,16 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
+  
+  upsnap:
+    container_name: upsnap
+    image: seriousm4x/upsnap
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${UPSNAP_VOLUME}:/app/pb_data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"
