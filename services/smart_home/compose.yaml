@@ -74,6 +74,8 @@ services:
     image: seriousm4x/upsnap
     restart: unless-stopped
     network_mode: host
+    volumes:
+      - ./data:/app/pb_data
     logging:
       driver: json-file
       options:
