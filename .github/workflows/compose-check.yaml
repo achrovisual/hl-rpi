@@ -1,0 +1,33 @@
+name: Check compose file
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check_syntax:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        uses: docker/setup-buildx-action@v3
+
+      - name: Find Compose Files
+        id: find_compose
+        run: |
+          find ./services -type f -name "compose.yaml" -print0 | xargs -0 -I {} echo "::set-output name=files::{}"
+
+      - name: Check Compose Syntax
+        run: |
+          set -e
+          IFS=$'\n'
+          for file in ${{ steps.find_compose.outputs.files }}; do
+            echo "Checking syntax for $file"
+            docker compose -f "$file" config --quiet
+            echo "Syntax OK for $file"
+          done
