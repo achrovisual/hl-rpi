@@ -18,6 +18,14 @@ jobs:
       - name: Set up Docker Compose
         uses: docker/setup-buildx-action@v3
 
+      - name: Export Environment Variables
+        run: |
+          echo "HOME_ASSISTANT_VOLUME=./home-assistant" >> $GITHUB_ENV
+          echo "HOMEBRIDGE_VOLUME=./homebridge" >> $GITHUB_ENV
+          echo "SCRYPTED_TOKEN=ZkcEwvvAkEgYo6TWbuzQdKVVLrxrnReu" >> $GITHUB_ENV
+          echo "SCRYPTED_VOLUME=./scrypted" >> $GITHUB_ENV
+          echo "UPSNAP_VOLUME=./upsnap" >> $GITHUB_ENV
+
       - name: Find Compose Files
         id: find_compose
         run: |

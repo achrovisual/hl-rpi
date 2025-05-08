@@ -4,7 +4,6 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     restart: unless-stopped
     privileged: true
-    env_file: .env
     network_mode: host
     volumes:
       - ${HOME_ASSISTANT_VOLUME}:/config
@@ -33,7 +32,6 @@ services:
     container_name: scrypted
     image: ghcr.io/koush/scrypted
     restart: unless-stopped
-    env_file: .env
     environment:
       - SCRYPTED_WEBHOOK_UPDATE_AUTHORIZATION=Bearer ${SCRYPTED_TOKEN}
       - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
