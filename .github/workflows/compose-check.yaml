@@ -18,13 +18,13 @@ jobs:
       - name: Set up Docker Compose
         uses: docker/setup-buildx-action@v3
 
-      - name: Create .env file
+      - name: Export Environment Variables
         run: |
-          echo "HOME_ASSISTANT_VOLUME=./home-assistant" >> .env
-          echo "HOMEBRIDGE_VOLUME=./homebridge" >> .env
-          echo "SCRYPTED_TOKEN=ZkcEwvvAkEgYo6TWbuzQdKVVLrxrnReu" >> .env
-          echo "SCRYPTED_VOLUME=./scrypted" >> .env
-          echo "UPSNAP_VOLUME=./upsnap" >> .env
+          echo "HOME_ASSISTANT_VOLUME=./home-assistant" >> $GITHUB_ENV
+          echo "HOMEBRIDGE_VOLUME=./homebridge" >> $GITHUB_ENV
+          echo "SCRYPTED_TOKEN=ZkcEwvvAkEgYo6TWbuzQdKVVLrxrnReu" >> $GITHUB_ENV
+          echo "SCRYPTED_VOLUME=./scrypted" >> $GITHUB_ENV
+          echo "UPSNAP_VOLUME=./upsnap" >> $GITHUB_ENV
 
       - name: Find Compose Files
         id: find_compose
@@ -35,7 +35,6 @@ jobs:
         run: |
           set -e
           IFS=$'\n'
-          export $(cat .env | xargs)
           for file in ${{ steps.find_compose.outputs.files }}; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
