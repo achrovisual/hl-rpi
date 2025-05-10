@@ -14,6 +14,8 @@ Homebridge is an open-source software that acts as a bridge between Apple HomeKi
 ### Scrypted
 Scrypted is an open-source video integration platform that allows exposing of unsupported cameras to Apple HomeKit with support for HomeKit Secure Video (HKSV).
 
+If you experience problems with your Scrypted configuration not persisting, verify the permissions of the mounted directories and files. The mounted volume and its contents must be owned by the user and group that Scrypted runs under, granting it the required read and write permissions.
+
 ## Deploying the services
 
 ## Set the environment file
