@@ -18,13 +18,13 @@ If you experience problems with your Scrypted configuration not persisting, veri
 
 ## Deploying the services
 
-## Set the environment file
+### Set the environment file
 Create a copy of the example environment file and supply the necessary values.
 ```console
 user@rpi:~/hl-rpi/services/smart_home$ cp .env.example .env
 user@rpi:~/hl-rpi/services/smart_home$ nano .env
 ```
-
+### Running the containers
 Run the command below to deploy Home Assistant, Homebridge, Scrypted, and go2rtc.
 
 ```console
