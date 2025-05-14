@@ -3,7 +3,8 @@ name: Check compose file
 on:
   push:
     branches: [main]
-    paths
+    paths:
+      - services/**
   pull_request:
     branches: [main]
     paths:
