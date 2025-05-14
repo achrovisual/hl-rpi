@@ -17,7 +17,6 @@ env:
 jobs:
   check_syntax:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,14 +27,21 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          find ./services -type f -name "compose.yaml" -print0 | xargs -0 -I {} echo "::set-output name=files::{}"
+          find ./services -type f -name "compose.yaml" | while read -r file; do
+            echo "::set-output name=files::$file"
+          done
 
       - name: Check Compose Syntax
         run: |
           set -e
-          IFS=$'\n'
-          for file in ${{ steps.find_compose.outputs.files }}; do
-            echo "Checking syntax for $file"
-            docker compose -f "$file" config --quiet
-            echo "Syntax OK for $file"
-          done
+          files="${{ steps.find_compose.outputs.files }}"
+          if [ -z "$files" ]; then
+            echo "No compose.yaml files found."
+          else
+            IFS=$'\n'
+            for file in $files; do
+              echo "Checking syntax for $file"
+              docker compose -f "$file" config --quiet
+              echo "Syntax OK for $file"
+            done
+          fi
