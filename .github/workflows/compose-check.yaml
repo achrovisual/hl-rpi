@@ -32,7 +32,9 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          find ./services -type f -name "compose.yaml" -print0 | xargs -0 -I {} echo "::set-output name=files::{}"
+          find ./services -type f -name "compose.yaml" | while read -r file; do
+            echo "::set-output name=files::$file"
+          done
 
       - name: Check Compose Syntax
         run: |
