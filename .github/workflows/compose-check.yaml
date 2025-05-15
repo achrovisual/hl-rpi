@@ -3,12 +3,12 @@ name: Check compose file
 on:
   push:
     branches: [main]
-    paths:
-      - services/**
+    # paths:
+    #   - services/**
   pull_request:
     branches: [main]
-    paths:
-      - services/**
+    # paths:
+    #   - services/**
   workflow_dispatch:
 
 env:
