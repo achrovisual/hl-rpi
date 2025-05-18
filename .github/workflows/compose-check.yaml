@@ -3,12 +3,12 @@ name: Check compose file
 on:
   push:
     branches: [main]
-    paths:
-      - services/**
+    # paths:
+    #   - services/**
   pull_request:
     branches: [main]
-    paths:
-      - services/**
+    # paths:
+    #   - services/**
   workflow_dispatch:
 
 env:
@@ -32,13 +32,20 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          find ./services -type f -name "compose.yaml" -print0 | xargs -0 -I {} echo "::set-output name=files::{}"
+          find ./services -type f -name "compose.yaml" | while read -r file; do
+            echo "::set-output name=files::$file"
+          done
 
       - name: Check Compose Syntax
         run: |
           set -e
+          files="${{ steps.find_compose.outputs.files }}"
+          if [ -z "$files" ]; then
+            echo "No compose.yaml files found."
+            exit 0
+          fi
           IFS=$'\n'
-          for file in ${{ steps.find_compose.outputs.files }}; do
+          for file in $files; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
             echo "Syntax OK for $file"
