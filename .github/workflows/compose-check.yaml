@@ -59,19 +59,18 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          files=$(find ./services -type f -name "compose.yaml")
-          # Format the output as a JSON array
-          echo "::set-output name=files::$(echo "$files" | jq -sR 'split("\n") | map(select(length > 0))')"
+          files=$(find ./services -type f -name "compose.yaml" -print0 | xargs -0 jq -sR .)
+          echo "::set-output name=files::$files"
 
       - name: Check Compose Syntax
         run: |
           set -e
-          files="${{ fromJson(steps.find_compose.outputs.files) }}" # Use fromJson to parse the JSON string
-          if [ ${#files[@]} -eq 0 ]; then
+          files="${{ steps.find_compose.outputs.files }}"
+          if [ -z "$files" ]; then
             echo "No compose.yaml files found."
             exit 0
           fi
-          for file in "${files[@]}"; do
+          echo "$files" | jq -r '.[]' | while read -r file; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
             echo "Syntax OK for $file"
