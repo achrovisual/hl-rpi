@@ -12,10 +12,17 @@ on:
   workflow_dispatch:
 
 env:
-  HOME_ASSISTANT_VOLUME: ${{ secrets.HOME_ASSISTANT_VOLUME }}
+  # Home Assistant
+  HOME_ASSISTANT_VOLUME: ${{ secrets.HOME_ASSISTANT_VOLUME }}\
+
+  # Homebridge
   HOMEBRIDGE_VOLUME: ${{ secrets.HOMEBRIDGE_VOLUME }}
+
+  # Scrypted
   SCRYPTED_TOKEN: ${{ secrets.SCRYPTED_TOKEN }}
   SCRYPTED_VOLUME: ${{ secrets.SCRYPTED_VOLUME }}
+
+  # UpSnap
   UPSNAP_VOLUME: ${{ secrets.UPSNAP_VOLUME }}
 
 jobs:
