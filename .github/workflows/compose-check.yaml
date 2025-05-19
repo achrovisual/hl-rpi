@@ -59,9 +59,8 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          # Construct the JSON array string directly and write it to GITHUB_ENV
-          files=$(find ./services -type f -name "compose.yaml" | jq -scR .)
-          echo "FILES=$files" >> "$GITHUB_ENV"
+          files_array=$(find ./services -type f -name "compose.yaml" | jq -c -s -R '.')
+          echo "FILES=$files_array" >> "$GITHUB_ENV"
 
       - name: Check Compose Syntax
         run: |
