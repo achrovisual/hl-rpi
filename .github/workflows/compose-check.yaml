@@ -62,25 +62,16 @@ jobs:
           files=$(find ./services -type f -name "compose.yaml" | jq -scR .)
           echo "::set-output name=files::$files"
           
-      - name: Check Compose Syntax
+     - name: Check Compose Syntax
         run: |
           set -e
           files="${{ steps.find_compose.outputs.files }}"
-
-          # Targeted removal of the newline character at the end
-          cleaned_files=$(echo "$files" | sed '$ s/\n$//')
-          echo "Cleaned files variable (sed 's/\\n$//'): '$cleaned_files'"
-
-          # Debug: Hexdump the cleaned variable
-          echo "Cleaned files variable (hex):"
-          echo "$cleaned_files" | hexdump -C
-
-          if [ -z "$cleaned_files" ]; then
+          echo "Raw files variable: '$files'"
+          if [ -z "$files" ]; then
             echo "No compose.yaml files found."
             exit 0
           fi
-
-          echo "$cleaned_files" | jq -r '.[]' | while read -r file; do
+          echo "$files" | jq -r '.[]' | while read -r file; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
             echo "Syntax OK for $file"
