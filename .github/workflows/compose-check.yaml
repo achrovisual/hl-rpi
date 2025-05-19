@@ -59,9 +59,8 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          find ./services -type f -name "compose.yaml" | while read -r file; do
-            echo "::set-output name=files::$file"
-          done
+          files=$(find ./services -type f -name "compose.yaml" | jq -R -s 'split("\n") | map(select(length > 0))')
+          echo "::set-output name=files::$files"
 
       - name: Check Compose Syntax
         run: |
@@ -71,8 +70,7 @@ jobs:
             echo "No compose.yaml files found."
             exit 0
           fi
-          IFS=$'\n'
-          for file in $files; do
+          echo "$files" | jq -r '.[]' | while read -r file; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
             echo "Syntax OK for $file"
