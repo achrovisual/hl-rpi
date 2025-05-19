@@ -25,6 +25,11 @@ env:
   # UpSnap
   UPSNAP_VOLUME: ${{ secrets.UPSNAP_VOLUME }}
 
+  # Plex
+  PLEX_CONFIG_VOLUME: ${{ secrets.PLEX_CONFIG_VOLUME }}
+  PLEX_DATA_VOLUME: ${{ secrets.PLEX_DATA_VOLUME }}
+  PLEX_TRANSCODE_VOLUME: ${{ secrets.PLEX_TRANSCODE_VOLUME }}
+
 jobs:
   check_syntax:
     runs-on: ubuntu-latest
