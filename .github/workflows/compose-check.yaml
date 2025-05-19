@@ -66,13 +66,21 @@ jobs:
         run: |
           set -e
           files="${{ steps.find_compose.outputs.files }}"
-          files=$(echo "$files" | awk '{sub(/[[:space:]]*$/, ""); print}') # Remove trailing whitespace (including newline)
-          echo "Cleaned files variable: '$files'"
-          if [ -z "$files" ]; then
+
+          # More aggressive cleaning: remove leading/trailing whitespace AND newlines
+          cleaned_files=$(echo "$files" | tr -d '[:space:]')
+          echo "Cleaned files variable (tr -d '[:space:]'): '$cleaned_files'"
+
+          # Debug: Hexdump the cleaned variable
+          echo "Cleaned files variable (hex):"
+          echo "$cleaned_files" | hexdump -C
+
+          if [ -z "$cleaned_files" ]; then
             echo "No compose.yaml files found."
             exit 0
           fi
-          echo "$files" | jq -r '.[]' | while read -r file; do
+
+          echo "$cleaned_files" | jq -r '.[]' | while read -r file; do
             echo "Checking syntax for $file"
             docker compose -f "$file" config --quiet
             echo "Syntax OK for $file"
