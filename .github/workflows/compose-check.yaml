@@ -59,9 +59,9 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          files_array=$(find ./services -type f -name "compose.yaml" | jq -n -c '[inputs]')
+          files_array=$(find ./services -type f -name "compose.yaml" -print0 | xargs -0 jq -n -c '[.[]]')
           echo "FILES=$files_array" >> "$GITHUB_ENV"
-
+          
       - name: Check Compose Syntax
         run: |
           set -e
