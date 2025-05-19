@@ -66,8 +66,8 @@ jobs:
         run: |
           set -e
           files="${{ steps.find_compose.outputs.files }}"
-          echo "Raw files variable (hex):"
-          echo "$files" | hexdump -C
+          files=$(echo "$files" | awk '{sub(/[[:space:]]*$/, ""); print}') # Remove trailing whitespace (including newline)
+          echo "Cleaned files variable: '$files'"
           if [ -z "$files" ]; then
             echo "No compose.yaml files found."
             exit 0
