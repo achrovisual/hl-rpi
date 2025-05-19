@@ -67,9 +67,9 @@ jobs:
           set -e
           files="${{ steps.find_compose.outputs.files }}"
 
-          # More aggressive cleaning: remove leading/trailing whitespace AND newlines
-          cleaned_files=$(echo "$files" | tr -d '[:space:]')
-          echo "Cleaned files variable (tr -d '[:space:]'): '$cleaned_files'"
+          # Targeted removal of the newline character at the end
+          cleaned_files=$(echo "$files" | sed '$ s/\n$//')
+          echo "Cleaned files variable (sed 's/\\n$//'): '$cleaned_files'"
 
           # Debug: Hexdump the cleaned variable
           echo "Cleaned files variable (hex):"
