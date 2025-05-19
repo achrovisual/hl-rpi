@@ -40,6 +40,11 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   REDIS_URL: ${{ secrets.REDIS_URL }}
 
+  # Samba
+  SAMBA_USER: ${{ secrets.SAMBA_USER }}
+  SAMBA_PASS: ${{ secrets.SAMBA_PASS }}
+  SAMBA_VOLUME: ${{ secrets.SAMBA_VOLUME }}
+
 jobs:
   check_syntax:
     runs-on: ubuntu-latest
