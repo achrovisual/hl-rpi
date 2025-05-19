@@ -59,9 +59,15 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          files_array=$(find ./services -type f -name "compose.yaml" -print0 | xargs -0 jq -n -c '[.[]]')
-          echo "FILES=$files_array" >> "$GITHUB_ENV"
-          
+          find_output=$(find ./services -type f -name "compose.yaml" -print0)
+          if [[ -z "$find_output" ]]; then
+            echo "No compose.yaml files found."
+            echo "FILES=[]" >> "$GITHUB_ENV" # Set FILES to an empty JSON array
+          else
+            files_array=$(echo "$find_output" | xargs -0 jq -n -c '[.[]]')
+            echo "FILES=$files_array" >> "$GITHUB_ENV"
+          fi
+
       - name: Check Compose Syntax
         run: |
           set -e
