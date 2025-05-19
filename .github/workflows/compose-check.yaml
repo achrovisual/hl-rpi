@@ -62,7 +62,7 @@ jobs:
           files=$(find ./services -type f -name "compose.yaml" | jq -scR .)
           echo "::set-output name=files::$files"
           
-     - name: Check Compose Syntax
+      - name: Check Compose Syntax
         run: |
           set -e
           files="${{ steps.find_compose.outputs.files }}"
