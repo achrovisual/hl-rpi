@@ -59,14 +59,16 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
+          # Construct the JSON array string directly and write it to GITHUB_ENV
           files=$(find ./services -type f -name "compose.yaml" | jq -scR .)
-          echo "::set-output name=files::$files"
-          
+          echo "FILES=$files" >> "$GITHUB_ENV"
+
       - name: Check Compose Syntax
         run: |
           set -e
-          files="${{ steps.find_compose.outputs.files }}"
-          echo "Raw files variable: '$files'"
+          # Read the file list from the GITHUB_ENV variable
+          files="$FILES"
+          echo "Raw files variable from GITHUB_ENV: '$files'"
           if [ -z "$files" ]; then
             echo "No compose.yaml files found."
             exit 0
