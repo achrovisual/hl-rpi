@@ -59,7 +59,7 @@ jobs:
       - name: Find Compose Files
         id: find_compose
         run: |
-          files=$(find ./services -type f -name "compose.yaml" | jq -R -s 'split("\n") | map(select(length > 0))')
+          files=$(find ./services -type f -name "compose.yaml" | jq -R -s 'split("\n") | map(select(length > 0))' | jq -c .)
           echo "::set-output name=files::$files"
 
       - name: Check Compose Syntax
