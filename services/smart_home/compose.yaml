@@ -9,6 +9,11 @@ services:
       - ${HOME_ASSISTANT_VOLUME}:/config
       - ./config/home-assistant/commands:/commands:ro
     #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
+    environment:
+      - UPSNAP_URL=${UPSNAP_URL}
+      - UPSNAP_USERNAME=${UPSNAP_USERNAME}
+      - UPSNAP_PASSWORD=${UPSNAP_PASSWORD}
+      - UPSNAP_DEVICE_ID=${UPSNAP_DEVICE_ID}
     logging:
       driver: json-file
       options:
