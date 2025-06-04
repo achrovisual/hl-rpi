@@ -1,42 +1,4 @@
 services:
-  reverse-proxy:
-    # Use Traefik for routing and certificate handling.
-    image: traefik:v2.6
-    command:
-      - --providers.docker
-      - --certificatesResolvers.letsencrypt.acme.email=${EMAIL}
-      - --certificatesResolvers.letsencrypt.acme.storage=/acme/acme.json
-      - --certificatesResolvers.letsencrypt.acme.tlschallenge=true
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.websecure.http.tls=true
-      - --entrypoints.web.address=:80
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --entrypoints.web.http.redirections.entrypoint.scheme=https
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      # You may want to put state somewhere other than /tmp :-)
-      - /tmp/grist/acme:/acme
-      # Traefik needs docker access when configured via docker labels.
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  traefik-forward-auth:
-    # Authentication middleware.
-    # See https://github.com/thomseddon/traefik-forward-auth for
-    # options for configuring it.
-    image: thomseddon/traefik-forward-auth:2
-    environment:
-      PROVIDERS_GOOGLE_CLIENT_ID: your-google-client-id
-      PROVIDERS_GOOGLE_CLIENT_SECRET: your-google-client-secret
-      SECRET: something-random
-      LOGOUT_REDIRECT: "https://${DOMAIN}/signed-out"
-    labels:
-      traefik.http.services.traefik-forward-auth.loadbalancer.server.port: 4181
-      traefik.http.middlewares.traefik-forward-auth.forwardauth.address: "http://traefik-forward-auth:4181"
-      traefik.http.middlewares.traefik-forward-auth.forwardauth.authResponseHeaders: "X-Forwarded-User"
-      traefik.http.middlewares.no-forward-user-header.headers.customRequestHeaders.X-Forwarded-User: ""
-
   grist:
     image: gristlabs/grist
     environment:
@@ -44,26 +6,9 @@ services:
       GRIST_FORWARD_AUTH_LOGOUT_PATH: _oauth/logout
       GRIST_SINGLE_ORG: grist  # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
       GRIST_DEFAULT_EMAIL: ${EMAIL}
-      APP_HOME_URL: https://${DOMAIN}
+      APP_HOME_URL: http://${DOMAIN}
     ports:
       - "8484:8484"
     volumes:
       # You may want to put state somewhere other than /tmp :-)
       - /tmp/grist/data:/persist
-    labels:
-      traefik.http.services.grist.loadbalancer.server.port: 8484
-
-      # When logging in and for tfa's own endpoints, use traefik-forward-auth middleware.
-      traefik.http.routers.login.rule: Host(`${DOMAIN}`) && (PathPrefix(`/auth/login`) || PathPrefix(`/_oauth`))
-      traefik.http.routers.login.middlewares: traefik-forward-auth
-      traefik.http.routers.login.service: grist
-      # Comment out each line with "letsencypt" in it if your domain is not publically
-      # accessible and you want to use a self-signed certificate.
-      traefik.http.routers.login.tls.certresolver: letsencrypt
-
-      # Otherwise, the middleware is not needed and would prevent
-      # public shares. Grist will redirect to login when needed.
-      traefik.http.routers.general.rule: Host(`${DOMAIN}`)
-      traefik.http.routers.general.middlewares: no-forward-user-header
-      traefik.http.routers.general.service: grist
-      traefik.http.routers.general.tls.certresolver: letsencrypt
