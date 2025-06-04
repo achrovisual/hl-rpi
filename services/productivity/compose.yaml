@@ -4,11 +4,11 @@ services:
     image: gristlabs/grist
     restart: unless-stopped
     environment:
-      GRIST_FORWARD_AUTH_HEADER: X-Forwarded-User
-      GRIST_FORWARD_AUTH_LOGOUT_PATH: _oauth/logout
-      GRIST_SINGLE_ORG: grist  # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
-      GRIST_DEFAULT_EMAIL: ${GRIST_EMAIL}
-      APP_HOME_URL: http://${GRIST_DOMAIN}
+      - RIST_FORWARD_AUTH_HEADER=X-Forwarded-User
+      - GRIST_FORWARD_AUTH_LOGOUT_PATH=_oauth/logout
+      - GRIST_SINGLE_ORG=grist  # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
+      - GRIST_DEFAULT_EMAIL=${GRIST_EMAIL}
+      - APP_HOME_URL=http://${GRIST_DOMAIN}
     ports:
       - "8484:8484"
     volumes:
