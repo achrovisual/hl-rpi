@@ -79,3 +79,4 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
+    entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
