@@ -5,10 +5,10 @@ services:
       GRIST_FORWARD_AUTH_HEADER: X-Forwarded-User
       GRIST_FORWARD_AUTH_LOGOUT_PATH: _oauth/logout
       GRIST_SINGLE_ORG: grist  # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
-      GRIST_DEFAULT_EMAIL: ${EMAIL}
-      APP_HOME_URL: http://${DOMAIN}
+      GRIST_DEFAULT_EMAIL: ${GRIST_EMAIL}
+      APP_HOME_URL: http://${GRIST_DOMAIN}
     ports:
       - "8484:8484"
     volumes:
       # You may want to put state somewhere other than /tmp :-)
-      - /tmp/grist/data:/persist
+      - ${GRIST_VOLUME}:/persist
