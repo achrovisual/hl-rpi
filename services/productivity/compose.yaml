@@ -1,6 +1,7 @@
 services:
   grist:
-    image: gristlabs/grist
+    container_name: grist
+    image: gristlabs/gris
     environment:
       GRIST_FORWARD_AUTH_HEADER: X-Forwarded-User
       GRIST_FORWARD_AUTH_LOGOUT_PATH: _oauth/logout
