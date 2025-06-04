@@ -2,6 +2,7 @@ services:
   grist:
     container_name: grist
     image: gristlabs/grist
+    restart: unless-stopped
     environment:
       GRIST_FORWARD_AUTH_HEADER: X-Forwarded-User
       GRIST_FORWARD_AUTH_LOGOUT_PATH: _oauth/logout
