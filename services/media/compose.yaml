@@ -11,3 +11,4 @@ services:
       - ${PLEX_CONFIG_VOLUME}:/config
       - ${PLEX_TRANSCODE_VOLUME}:/transcode
       - ${PLEX_DATA_VOLUME}:/data
+      - ${QBITTORRENT_DATA_VOLUME}:/downloads
