@@ -1,0 +1,13 @@
+services:
+  grist:
+    container_name: grist
+    image: gristlabs/grist
+    restart: unless-stopped
+    environment:
+      - GRIST_DEFAULT_EMAIL=${GRIST_EMAIL}
+      - GRIST_SESSION_SECRET=${GRIST_SECRET}
+    ports:
+      - "8484:8484"
+    volumes:
+      # You may want to put state somewhere other than /tmp :-)
+      - ${GRIST_VOLUME}:/persist
