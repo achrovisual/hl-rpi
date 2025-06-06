@@ -43,7 +43,7 @@ services:
     restart: unless-stopped
     environment:
       - SCRYPTED_WEBHOOK_UPDATE_AUTHORIZATION=Bearer ${SCRYPTED_TOKEN}
-      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
+      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update
     network_mode: host
     volumes:
       - ${SCRYPTED_VOLUME}:/server/volume
