@@ -19,6 +19,8 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
         
   homebridge:
     container_name: homebridge
@@ -32,6 +34,8 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
 
   scrypted:
     container_name: scrypted
@@ -50,6 +54,7 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
+      - "net.achrovisual.lgtm.logging.enabled=true"
 
   watchtower:
     container_name: scrypted-watchtower
@@ -71,6 +76,7 @@ services:
         max-file: "1"
     labels:
       - "com.centurylinklabs.watchtower.scope=scrypted"
+      - "net.achrovisual.lgtm.logging.enabled=true"
   
   upsnap:
     container_name: upsnap
@@ -85,3 +91,5 @@ services:
         max-size: "10mb"
         max-file: "1"
     entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
