@@ -12,3 +12,5 @@ services:
       - ${PLEX_TRANSCODE_VOLUME}:/transcode
       - ${PLEX_DATA_VOLUME}:/data
       - ${QBITTORRENT_DATA_VOLUME}:/downloads
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
