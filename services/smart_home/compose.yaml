@@ -81,6 +81,7 @@ services:
   upsnap:
     container_name: upsnap
     image: seriousm4x/upsnap
+    entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -90,6 +91,5 @@ services:
       options:
         max-size: "10mb"
         max-file: "1"
-    entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
     labels:
       - "net.achrovisual.lgtm.logging.enabled=true"
