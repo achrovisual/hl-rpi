@@ -12,6 +12,8 @@ services:
     volumes:
       - ./config/samba/smb.conf:/etc/samba/smb.conf
       - ${SAMBA_VOLUME}:/storage
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
       
   qbittorrent:
     container_name: qbittorrent
@@ -41,5 +43,7 @@ services:
       - ${QBITTORRENT_DATA_VOLUME}:/data
       - ${QBITTORRENT_CONFIG_VOLUME}:/config
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
     # profiles:
     #   - torrent
