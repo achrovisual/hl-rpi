@@ -6,3 +6,5 @@ services:
     volumes:
       - ${NGINX_PROXY_MANAGER_VOLUME}:/data
       - ${NGINX_PROXY_MANAGER_VOLUME}/letsencrypt:/etc/letsencrypt
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
