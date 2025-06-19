@@ -1,16 +1,16 @@
 services:
   plex:
-    container_name: plex
     image: plexinc/pms-docker
-    restart: always
-    network_mode: host
+    container_name: plex
     environment:
       TZ: ${PLEX_TZ}
       PLEX_CLAIM: ${PLEX_CLAIM_TOKEN}
+    network_mode: host
     volumes:
       - ${PLEX_CONFIG_VOLUME}:/config
       - ${PLEX_TRANSCODE_VOLUME}:/transcode
       - ${PLEX_DATA_VOLUME}:/data
       - ${QBITTORRENT_DATA_VOLUME}:/downloads
+    restart: always
     labels:
       - "net.achrovisual.lgtm.logging.enabled=true"

@@ -1,10 +1,11 @@
 services:
   nginx-proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
+    container_name: nginx-proxy-manager
     network_mode: host
     volumes:
       - ${NGINX_PROXY_MANAGER_VOLUME}:/data
       - ${NGINX_PROXY_MANAGER_VOLUME}/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
     labels:
       - "net.achrovisual.lgtm.logging.enabled=true"

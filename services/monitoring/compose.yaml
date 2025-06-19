@@ -1,13 +1,13 @@
 services:
   lgtm:
-    container_name: lgtm
     image: grafana/otel-lgtm
-    restart: unless-stopped
+    container_name: lgtm
     ports:
       - 4317:4317
       - 4318:4318
+    restart: unless-stopped
     logging:
-    driver: json-file
-    options:
-      max-size: "10mb"
-      max-file: "1"
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"

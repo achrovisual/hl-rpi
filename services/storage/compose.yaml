@@ -1,8 +1,7 @@
 services:
   samba:
-    container_name: samba
     image: dockurr/samba
-    restart: always
+    container_name: samba
     environment:
       NAME: ${SAMBA_NAME}
       USER: ${SAMBA_USER}
@@ -12,18 +11,13 @@ services:
     volumes:
       - ./config/samba/smb.conf:/etc/samba/smb.conf
       - ${SAMBA_VOLUME}:/storage
+    restart: always
     labels:
       - "net.achrovisual.lgtm.logging.enabled=true"
       
   qbittorrent:
-    container_name: qbittorrent
     image: binhex/arch-qbittorrentvpn
-    restart: unless-stopped
-    privileged: true
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-    cap_add:
-      - NET_ADMIN
+    container_name: qbittorrent
     environment:
       - VPN_ENABLED=${QBITTORRENT_VPN_ENABLED}
       - VPN_PROV=${QBITORRENT_VPN_PROVIDER}
@@ -43,7 +37,13 @@ services:
       - ${QBITTORRENT_DATA_VOLUME}:/data
       - ${QBITTORRENT_CONFIG_VOLUME}:/config
       - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
     labels:
       - "net.achrovisual.lgtm.logging.enabled=true"
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     # profiles:
     #   - torrent
