@@ -1,19 +1,21 @@
 services:
   home-assistant:
-    container_name: home-assistant
     image: ghcr.io/home-assistant/home-assistant:stable
-    restart: unless-stopped
-    privileged: true
-    network_mode: host
-    volumes:
-      - ${HOME_ASSISTANT_VOLUME}:/config
-      - ./config/home-assistant/commands:/config/commands:ro
-    #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
+    container_name: home-assistant
     environment:
       - UPSNAP_URL=${UPSNAP_URL}
       - UPSNAP_USERNAME=${UPSNAP_USERNAME}
       - UPSNAP_PASSWORD=${UPSNAP_PASSWORD}
       - UPSNAP_DEVICE_ID=${UPSNAP_DEVICE_ID}
+    network_mode: host
+    volumes:
+      - ${HOME_ASSISTANT_VOLUME}:/config
+      - ./config/home-assistant/commands:/config/commands:ro
+    #  - ./config/otel-collector/run:/etc/services.d/home-assistant/run
+    restart: unless-stopped
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
+    privileged: true
     logging:
       driver: json-file
       options:
@@ -21,12 +23,14 @@ services:
         max-file: "1"
         
   homebridge:
-    container_name: homebridge
     image: homebridge/homebridge:latest
-    restart: unless-stopped
+    container_name: homebridge
     network_mode: host
     volumes:
       - ${HOMEBRIDGE_VOLUME}:/homebridge
+    restart: unless-stopped
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
     logging:
       driver: json-file
       options:
@@ -34,27 +38,28 @@ services:
         max-file: "1"
 
   scrypted:
-    container_name: scrypted
     image: ghcr.io/koush/scrypted
-    restart: unless-stopped
+    container_name: scrypted
     environment:
       - SCRYPTED_WEBHOOK_UPDATE_AUTHORIZATION=Bearer ${SCRYPTED_TOKEN}
-      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update\
+      - SCRYPTED_WEBHOOK_UPDATE=http://localhost:10444/v1/update
     network_mode: host
     volumes:
       - ${SCRYPTED_VOLUME}:/server/volume
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.scope=scrypted"
+      - "net.achrovisual.lgtm.logging.enabled=true"
     logging:
       driver: json-file
       options:
         max-size: "10mb"
         max-file: "1"
-    labels:
-      - "com.centurylinklabs.watchtower.scope=scrypted"
 
   watchtower:
-    container_name: scrypted-watchtower
     image: containrrr/watchtower
-    restart: unless-stopped
+    container_name: scrypted-watchtower
+    command: --interval 3600 --cleanup --scope scrypted
     environment:
       - WATCHTOWER_HTTP_API_TOKEN=${SCRYPTED_TOKEN}
       - WATCHTOWER_HTTP_API_UPDATE=true
@@ -63,25 +68,28 @@ services:
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 3600 --cleanup --scope scrypted
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.scope=scrypted"
+      - "net.achrovisual.lgtm.logging.enabled=true"
     logging:
       driver: json-file
       options:
         max-size: "10mb"
         max-file: "1"
-    labels:
-      - "com.centurylinklabs.watchtower.scope=scrypted"
   
   upsnap:
-    container_name: upsnap
     image: seriousm4x/upsnap
-    restart: unless-stopped
+    container_name: upsnap
+    entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
     network_mode: host
     volumes:
       - ${UPSNAP_VOLUME}:/app/pb_data
+    restart: unless-stopped
+    labels:
+      - "net.achrovisual.lgtm.logging.enabled=true"
     logging:
       driver: json-file
       options:
         max-size: "10mb"
         max-file: "1"
-    entrypoint: /bin/sh -c "apk update && apk add --no-cache samba samba-common-tools && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
