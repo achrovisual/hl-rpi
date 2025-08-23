@@ -3,8 +3,8 @@ services:
     image: "jc21/nginx-proxy-manager:latest"
     container_name: nginx-proxy-manager
     environment:
-      - INITIAL_ADMIN_EMAIL=${NGINX_EMAIL}
-      - INITIAL_ADMIN_PASSWORD=${NGINX_PASSWORD}
+      - INITIAL_ADMIN_EMAIL=${NGINX_PROXY_MANAGER_EMAIL}
+      - INITIAL_ADMIN_PASSWORD=${NGINX_PROXY_MANAGER_PASSWORD}
     network_mode: host
     volumes:
       - ${NGINX_PROXY_MANAGER_VOLUME}:/data
