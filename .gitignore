@@ -35,6 +35,8 @@ terraform.rc
 
 # Ignore environment files
 .env
+venv/
+.venv/
 
 **/services/*/data
 
