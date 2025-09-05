@@ -26,7 +26,7 @@ user@rpi:~/hl-rpi/services/smart_home$ nano .env
 ```
 
 #### Environment Variable Details
-- **UPSNAP_URL**: The URL of your Upsnap instance, typically http://<your-upsnap-ip>:8090.
+- **UPSNAP_URL**: The URL of your Upsnap instance, typically `http://<your-upsnap-ip>:8090`.
 - **UPSNAP_USERNAME**: The username for your Upsnap instance.
 - **UPSNAP_PASSWORD**: The password for your Upsnap instance.
 - **UPSNAP_DEVICE_ID**: The unique ID of the device you want to wake up with Upsnap.
