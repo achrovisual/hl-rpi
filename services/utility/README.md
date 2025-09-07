@@ -13,6 +13,12 @@ Create a copy of the example environment file and supply the necessary values.
 user@rpi:~/hl-rpi/services/utility$ cp .env.example .env
 user@rpi:~/hl-rpi/services/utility$ nano .env
 ```
+
+#### Environment Variable Details
+- **NGINX_PROXY_MANAGER_VOLUME**: The absolute path on your host machine for Nginx Proxy Manager to store its configuration and SSL certificates.
+- **NGINX_PROXY_MANAGER_EMAIL**: The initial email address for the admin user.
+- **NGINX_PROXY_MANAGER_PASSWORD**: The initial password for the admin user.
+
 ### Running the containers
 Run the command below to deploy Nginx Proxy Manager.
 
