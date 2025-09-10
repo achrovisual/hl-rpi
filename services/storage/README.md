@@ -19,6 +19,20 @@ Create a copy of the example environment file and supply the necessary values.
 user@rpi:~/hl-rpi/services/smart_home$ cp .env.example .env
 user@rpi:~/hl-rpi/services/smart_home$ nano .env
 ```
+
+#### Environment Variable Details
+- **SAMBA_NAME**: The name of your Samba server, as it will appear on the network.
+- **SAMBA_USER**: The username for accessing the shared storage.
+- **SAMBA_PASS**: The password for the Samba user.
+- **SAMBA_VOLUME**: The absolute path on your host machine to the directory that you wish to share via Samba.
+- **QBITTORRENT_DATA_VOLUME**: The absolute path on your host machine where qBittorrent will download and store files.
+- **QBITTORRENT_CONFIG_VOLUME**: The absolute path on your host machine for qBittorrent's configuration files.
+- **QBITTORRENT_LAN**: The local network address range (e.g., 192.168.1.0/24) that qBittorrent should be able to communicate with.
+- **QBITTORRENT_VPN_ENABLED**: Set to true to enable the VPN, or false to disable it.
+- **QBITTORRENT_VPN_PROVIDER**: The name of your VPN provider (e.g., nordvpn, privateinternetaccess).
+- **QBITTORRENT_VPN_CLIENT**: The VPN client type to use, either openvpn or wireguard.
+- **QBITTORRENT_NAMESERVERS**: The DNS servers to be used by the container when the VPN is enabled, as a comma-separated list (e.g., 8.8.8.8,8.8.4.4).
+
 ### Running the containers
 Run the command below to deploy Samba and qBittorrent.
 
